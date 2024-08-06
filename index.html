@@ -1,0 +1,91 @@
+Interface
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PowerShell UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2; /* Spotify-like background color */
+            color: #333; /* Spotify-like text color */
+        }
+        button {
+            background-color: #1db954; /* Spotify-like green button color */
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px; /* Spotify-like font size */
+            font-weight: bold; /* Spotify-like font weight */
+        }
+        button:hover {
+            background-color: #1a8d3b; /* Spotify-like hover color */
+        }
+        #output {
+            background-color: #e6e6e6; /* Spotify-like output background color */
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        #command {
+            padding: 10px;
+            border: 1px solid #ccc; /* Spotify-like input border */
+            border-radius: 4px;
+            font-size: 16px; /* Spotify-like font size */
+            width: 50%; /* Adjusted width for better styling */
+        }
+    </style>
+</head>
+<body>
+    <h2>PowerShell UI</h2>
+    <div>
+        <button type="button" onclick="executeScript('script1.ps1')">Run Script 1</button>
+        <button type="button" onclick="executeScript('script2.ps1')">Run Script 2</button>
+        <button type="button" onclick="executeScript('script3.ps1')">Run Script 3</button>
+        <button type="button" onclick="executeScript('script4.ps1')">Run Script 4</button>
+        <button type="button" onclick="executeScript('script5.ps1')">Run Script 5</button>
+        <button type="button" onclick="executeScript('script6.ps1')">Run Script 6</button>
+    </div>
+    <div id="output"></div>
+    <div>
+        <input type="text" id="command" placeholder="Enter your command here">
+        <button type="button" onclick="executeCommand()">Execute Command</button>
+    </div>
+
+    <script>
+        function executeScript(scriptName) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8080/execute", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({ script: scriptName }));
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById("output").innerHTML = xhr.responseText;
+                } else {
+                    document.getElementById("output").innerHTML = "Failed to execute script.";
+                }
+            };
+        }
+        function executeCommand() {
+            var command = document.getElementById("command").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8080/execute", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({ command: command }));
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById("output").innerHTML = xhr.responseText;
+                } else {
+                    document.getElementById("output").innerHTML = "Failed to execute command.";
+                }
+            };
+        }
+    </script>
+</body>
+</html>
+'@
+
+$UI | Out-File -FilePath "C:\Path\To\Your\UI.html"
