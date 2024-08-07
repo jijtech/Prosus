@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Script Executor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+        .menu-item {
+            margin: 0 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .menu-item:hover {
+            color: #007bff;
+        }
+        .pane {
+            display: none;
+            padding: 20px;
+        }
+        .pane.active {
+            display: block;
+        }
+        .script-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .execute-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .execute-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <div class="menu-item" onclick="switchPane('script-execution')">Script Execution</div>
+            <div class="menu-item" onclick="switchPane('script-library')">Script Library</div>
+            <div class="menu-item" onclick="switchPane('help')">Help</div>
+        </div>
+        <div class="pane active" id="script-execution">
+            <h2>Execute PowerShell Script</h2>
+            <input type="text" class="script-input" id="script-input" placeholder="Enter script URL or paste script content">
+            <button class="execute-btn" onclick="executeScript()">Execute Script</button>
+            <div id="script-output"></div>
+        </div>
+        <div class="pane" id="script-library">
+            <h2>Script Library</h2>
+            <p>Coming soon...</p>
+        </div>
+        <div class="pane" id="help">
+            <h2>Help</h2>
+            <p>For assistance, please contact your system administrator.</p>
+        </div>
+    </div>
+
+    <script>
+        function switchPane(paneId) {
+            document.querySelectorAll('.pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            document.getElementById(paneId).classList.add('active');
+        }
+
+        function executeScript() {
+            const scriptInput = document.getElementById('script-input').value;
+            const scriptOutput = document.getElementById('script-output');
+            scriptOutput.innerHTML = 'Executing script...';
+            fetch(`https://SomeWebsite.com/execute?script=${encodeURIComponent(scriptInput)}`)
+                .then(response => response.json())
+                .then(data => {
+                    scriptOutput.innerHTML = data.output;
+                })
+                .catch(error => {
+                    scriptOutput.innerHTML = 'Error executing script: ' + error.message;
+                });
+        }
+    </script>
+</body>
+</html>
